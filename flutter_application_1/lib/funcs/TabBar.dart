@@ -37,7 +37,7 @@ class Tabbar extends StatelessWidget {
         ),
         body: TabBarView(children: [
           HomePage(),
-          SecondPage()
+          SecondPage(),
         ]),
       ),
     );

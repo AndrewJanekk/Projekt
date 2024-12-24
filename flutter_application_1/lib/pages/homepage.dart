@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/funcs/Grups.dart';
 import 'package:flutter_application_1/funcs/dialog_box.dart';
@@ -11,19 +9,18 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
+  List GroupList = []; // Lista grup
 
-  List GroupList = [
+  final _controller = TextEditingController();
 
-  ];
-
-  final _controller = TextEditingController(); 
-
+  @override
+  bool get wantKeepAlive => true; // Wymuszenie przechowywania stanu
 
   void CreateNewGroup() {
     showDialog(
       context: context,
-       builder: (context) {
+      builder: (context) {
         return DialogBox(
           controller: _controller,
           onSave: _SaveNewGroup,
@@ -32,14 +29,16 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-  void _SaveNewGroup(){
+
+  void _SaveNewGroup() {
     setState(() {
       GroupList.add([_controller.text]);
       _controller.clear();
     });
     Navigator.of(context).pop();
   }
-  void deleteGroup(int index){
+
+  void deleteGroup(int index) {
     setState(() {
       GroupList.removeAt(index);
     });
@@ -47,25 +46,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context); // Ważne! Trzeba to wywołać w build() z AutomaticKeepAliveClientMixin.
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       floatingActionButton: FloatingActionButton(
         onPressed: CreateNewGroup,
         backgroundColor: Theme.of(context).colorScheme.onSecondary,
         child: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
+          Icons.add,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
       body: ListView.builder(
         itemCount: GroupList.length,
         itemBuilder: (context, index) {
           return Grups(
             GroupName: GroupList[index][0],
             delateFunction: (context) => deleteGroup(index),
-            );
+          );
         },
-
       ),
     );
   }
