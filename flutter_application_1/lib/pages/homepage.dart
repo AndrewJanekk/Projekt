@@ -10,12 +10,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
-  List GroupList = []; // Lista grup
+  List GroupList = []; // 
 
   final _controller = TextEditingController();
 
   @override
-  bool get wantKeepAlive => true; // Wymuszenie przechowywania stanu
+  bool get wantKeepAlive => true; 
 
   void CreateNewGroup() {
     showDialog(
