@@ -40,6 +40,9 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Sign Up"),
+      ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 35, vertical: 70),
@@ -53,10 +56,16 @@ class _RegisterPageState extends State<RegisterPage> {
           TextField(
             controller: _passwordController,
             decoration: InputDecoration(labelText: "Password"),
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
           ),
           TextField(
             controller: _confirmPassword,
             decoration: InputDecoration(labelText: "Confirm Password"),
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
           ),
           ElevatedButton(
             onPressed: SignUp,
@@ -71,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 builder: (context) => const LoginPage(),)
             ),
             child: Center(
-              child: Text("allready have a account? Log in"),
+              child: Text("allready have a account? Log in!"),
             ),
           ),
           
