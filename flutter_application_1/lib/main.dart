@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/funcs/TabBar.dart';
+import 'package:flutter_application_1/auth/gate.dart';
 import 'package:flutter_application_1/themes/themes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Tabbar(),
+      home: AuthGate(),
       theme: lightmode,
       darkTheme: darkmode,
     );

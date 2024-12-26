@@ -1,36 +1,42 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auth/auth_service.dart';
-import 'package:flutter_application_1/pages/RegisterPage.dart';
+import 'package:flutter_application_1/pages/loginPage.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final authService = AuthService();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPassword = TextEditingController();
 
-  void login() async {
+  void SignUp() async {
     final email = _emailController.text;
     final password = _passwordController.text;
+    final confirmedPassword = _confirmPassword.text;
+
+    if (password != confirmedPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password dont match!")));
+      return;
+    }
 
     try {
-      await authService.signInWithEmailPassword(email, password);
+      await authService.signUpWithEmailPassword(email, password);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Error: $e")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     }
   }
 
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +54,12 @@ class _LoginPageState extends State<LoginPage> {
             controller: _passwordController,
             decoration: InputDecoration(labelText: "Password"),
           ),
+          TextField(
+            controller: _confirmPassword,
+            decoration: InputDecoration(labelText: "Confirm Password"),
+          ),
           ElevatedButton(
-            onPressed: login,
+            onPressed: SignUp,
             child: Text("Log in"),
 
             ),
@@ -58,10 +68,10 @@ class _LoginPageState extends State<LoginPage> {
           GestureDetector(
             onTap: () => Navigator.push(
               context, MaterialPageRoute(
-                builder: (context) => const RegisterPage(),)
+                builder: (context) => const LoginPage(),)
             ),
             child: Center(
-              child: Text("don't have an acconut? Sign up"),
+              child: Text("allready have a account? Log in"),
             ),
           ),
           
