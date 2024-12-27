@@ -27,7 +27,7 @@ class Tabbar extends StatelessWidget {
               onPressed: logout
             , icon: Icon(Icons.logout))
           ],
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           title: Text('Fpay'),
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(50),
@@ -37,24 +37,28 @@ class Tabbar extends StatelessWidget {
                   height: 20,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                 Container(
-                    child: TabBar(
-                      dividerColor: Colors.transparent,
-                      indicator: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      tabs: const [
-                        Tab(text: 'home',),
-                        Tab(text: "Sec",)
-                      ]),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    borderRadius: BorderRadius.circular(5)
-                    
-                  ),
-                             
+                 Padding(
+                   padding: const EdgeInsets.only(left: 25, right: 25),
+                   child: Container(
+                      child: TabBar(
+                        dividerColor: Colors.transparent,
+                        indicator: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        labelColor: Theme.of(context).colorScheme.secondary,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        tabs: const [
+                          Tab(text: 'home',),
+                          Tab(text: "Sec",)
+                        ]),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      
+                      
+                    ),
+                               
+                   ),
                  ),
                ],
              )
