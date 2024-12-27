@@ -1,5 +1,4 @@
-
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auth/auth_service.dart';
@@ -30,22 +29,36 @@ class Tabbar extends StatelessWidget {
           ],
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text('Fpay'),
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.home,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+             child: Column(
+               children: [
+                Container(
+                  height: 20,
                   color: Theme.of(context).colorScheme.secondary,
+                ),
+                 Container(
+                    child: TabBar(
+                      dividerColor: Colors.transparent,
+                      indicator: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      tabs: const [
+                        Tab(text: 'home',),
+                        Tab(text: "Sec",)
+                      ]),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.secondary,
+                    borderRadius: BorderRadius.circular(5)
+                    
                   ),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.money,
-                  color: Theme.of(context).colorScheme.secondary,
-                  ),
-              )
-            ],
-          ),
+                             
+                 ),
+               ],
+             )
+            )
         ),
         body: TabBarView(children: [
           HomePage(),
