@@ -20,7 +20,32 @@ class Tabbar extends StatelessWidget {
       initialIndex: 1,
       length: 2,
       child: Scaffold(
-        drawer: Drawer(),
+        drawer: Drawer(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Center(
+                  child: Title(
+                    color: Theme.of(context).colorScheme.primary,
+                     child: Text("Fpay")),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  alignment: AlignmentDirectional(-1, 1),
+                  child: Text("guzik1"),
+                ),
+                Container(
+                  alignment: AlignmentDirectional(-1, 1),
+                  child: Text("guzik2"),
+                )
+              ],
+            ),
+          ),
+        ),
         appBar: AppBar(
           actions: [
             IconButton(
@@ -49,8 +74,8 @@ class Tabbar extends StatelessWidget {
                         labelColor: Theme.of(context).colorScheme.secondary,
                         indicatorSize: TabBarIndicatorSize.tab,
                         tabs: const [
-                          Tab(text: 'home',),
-                          Tab(text: "Sec",)
+                          Tab(text: 'Friends Pay',),
+                          Tab(text: "You Pay",)
                         ]),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.secondary,

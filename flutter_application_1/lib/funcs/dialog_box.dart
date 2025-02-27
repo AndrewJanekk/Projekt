@@ -5,10 +5,12 @@ import 'package:flutter_application_1/funcs/button.dart';
 
 class DialogBox extends StatelessWidget {
   final controller;
+  final ammontController;
   VoidCallback onSave;
   VoidCallback onCancel; 
     DialogBox({
       super.key, 
+      required this.ammontController,
       required this.controller,
       required this.onSave,
       required this.onCancel
@@ -32,6 +34,15 @@ class DialogBox extends StatelessWidget {
               hintText: 'Name new Group'
               ),
              
+          ),
+          TextField(
+            controller: ammontController,
+            keyboardType: TextInputType.numberWithOptions(),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              fillColor: Theme.of(context).colorScheme.onSecondary,
+              hintText: 'ammount'
+              ),
           ),
           Center(
             child: Row(

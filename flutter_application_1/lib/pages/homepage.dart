@@ -10,9 +10,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
-  List GroupList = []; // 
+  List GroupList = [
+    ["nowa grupa", 25.50,]
+  ]; // 
 
-  final _controller = TextEditingController();
+  final _nameController = TextEditingController();
+  final _amountController = TextEditingController();
 
   @override
   bool get wantKeepAlive => true; 
@@ -22,7 +25,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
       context: context,
       builder: (context) {
         return DialogBox(
-          controller: _controller,
+          controller: _nameController,
+          ammontController: _amountController,
           onSave: _SaveNewGroup,
           onCancel: () => Navigator.of(context).pop(),
         );
@@ -32,8 +36,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
   void _SaveNewGroup() {
     setState(() {
-      GroupList.add([_controller.text]);
-      _controller.clear();
+      final double money = double.tryParse(_amountController.text) ?? 0.0;
+      GroupList.add([_nameController.text, money]);
+      _nameController.clear();
+      _amountController.clear();
     });
     Navigator.of(context).pop();
   }
@@ -62,6 +68,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
         itemBuilder: (context, index) {
           return Grups(
             GroupName: GroupList[index][0],
+            Money: GroupList[index][1],
             delateFunction: (context) => deleteGroup(index),
           );
         },

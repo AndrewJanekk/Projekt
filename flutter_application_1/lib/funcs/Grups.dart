@@ -5,8 +5,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Grups extends StatelessWidget {
   final String GroupName;
+  final double Money;
   Function(BuildContext)? delateFunction;
-  Grups({super.key, required this.GroupName, required this.delateFunction});
+  Grups(
+    {super.key,
+    required this.GroupName,
+    required this.delateFunction,
+    required this.Money
+    }
+    );
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +40,11 @@ class Grups extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
                 
               ),
+              Text(
+                 "${Money.toStringAsFixed(2)} zł",
+                style: TextStyle(fontSize: 18),
+              ),
+
               IconButton(onPressed: () {
                 print('dodaj');
               },
