@@ -13,10 +13,27 @@ class AuthService {
 
   // Sign up
   Future<AuthResponse> signUpWithEmailPassword(String email, String password) async {
-    return await _supabase.auth.signUp(
+    final response = await _supabase.auth.signUp(
       email: email,
       password: password,
     );
+
+    // Create user profile after sign-up
+    if (response.user?.id != null) {
+      try {
+        await _supabase.from('profiles').insert({
+          'id': response.user!.id, // UUID from auth.users
+          'username': email.split('@')[0], // Example username
+        });
+        print("Profile created for user: ${response.user!.id}");
+      } catch (e) {
+        print("Failed to create profile: $e");
+      }
+    } else {
+      print("User ID is null after sign-up");
+    }
+
+    return response;
   }
 
   // Log out
