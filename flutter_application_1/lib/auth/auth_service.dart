@@ -3,6 +3,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
+  AuthService() {
+    print("Supabase client is ready!");
+    }
+
   // Sign in
   Future<AuthResponse> signInWithEmailPassword(String email, String password) async {
     return await _supabase.auth.signInWithPassword(
@@ -93,6 +97,37 @@ class AuthService {
       return response;
     } catch (e) {
       throw "Failed to get friends: $e";
+    }
+  }
+
+  // Get pending friend requests
+  Future<List<Map<String, dynamic>>> getPendingFriendRequests(String userId) async {
+    try {
+      final response = await _supabase
+          .from('friends')
+          .select('''
+            id, 
+            user_id, 
+            profiles!friends_user_id_fkey(id, username)
+          ''')
+          .eq('friend_id', userId)
+          .eq('status', 'pending');
+
+      return response;
+    } catch (e) {
+      throw "Failed to get pending friend requests: $e";
+    }
+  }
+
+  // Accept friend request
+  Future<void> acceptFriendRequest(int friendshipIdInt) async {
+    try {
+      await _supabase
+          .from('friends')
+          .update({'status': 'accepted'})
+          .eq('id', friendshipIdInt);
+    } catch (e) {
+      throw "Failed to accept friend request: $e";
     }
   }
 }

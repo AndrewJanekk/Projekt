@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/auth/auth_service.dart';
+import 'package:flutter_application_1/funcs/friend_requests_screen.dart';
 import 'package:flutter_application_1/pages/homepage.dart';
 import 'package:flutter_application_1/pages/secondpage.dart';
 import 'search_friends_screen.dart';
@@ -40,6 +41,17 @@ class Tabbar extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => SearchFriendsScreen(),
                       ),
+                    );
+                  },
+                ),
+                SizedBox(height: 5),
+                ListTile(
+                  title: Text("Friends Requests"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FriendRequestsScreen(),
+                      )
                     );
                   },
                 ),
