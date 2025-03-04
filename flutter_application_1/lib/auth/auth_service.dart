@@ -1,37 +1,81 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  //sign in
-  Future<AuthResponse> signInWithEmailPassword(
-    String email, String password
-  ) async {
+  // Sign in
+  Future<AuthResponse> signInWithEmailPassword(String email, String password) async {
     return await _supabase.auth.signInWithPassword(
       email: email,
-      password: password
-      );
+      password: password,
+    );
   }
-  //sign up
-    Future<AuthResponse> signUpWithEmailPassword(
-    String email, String password
-  ) async {
+
+  // Sign up
+  Future<AuthResponse> signUpWithEmailPassword(String email, String password) async {
     return await _supabase.auth.signUp(
       email: email,
-      password: password
-      );
+      password: password,
+    );
   }
-  //log out
+
+  // Log out
   Future<void> signOut() async {
     await _supabase.auth.signOut();
   }
 
-  String? GetCurrentUserEmail() {
-    final Session = _supabase.auth.currentSession;
-    final User = Session?.user;
-    return User?.email;
+  // Get current user id
+  String? getCurrentUserId() {
+    final session = _supabase.auth.currentSession;
+    final user = session?.user;
+    return user?.id;
   }
 
+  // Search users by username
+  Future<List<Map<String, dynamic>>> searchUsers(String query) async {
+    try {
+      final response = await _supabase
+          .from('profiles')
+          .select()
+          .ilike('username', '%$query%');
+
+      return response;
+    } catch (e) {
+      throw "Failed to search users: $e";
+    }
+  }
+
+  // Send friend request
+  Future<void> sendFriendRequest(String userId, String friendId) async {
+    try {
+      await _supabase.from('friends').insert([
+        {
+          'user_id': userId,
+          'friend_id': friendId,
+          'status': 'pending',
+        }
+      ]);
+    } catch (e) {
+      throw "Failed to send friend request: $e";
+    }
+  }
+
+  // Get friends list
+  Future<List<Map<String, dynamic>>> getFriends(String userId) async {
+    try {
+      final response = await _supabase
+          .from('friends')
+          .select('''
+            id, 
+            status, 
+            profiles!friends_friend_id_fkey(id, username)
+          ''')
+          .or('user_id.eq.$userId,friend_id.eq.$userId')
+          .eq('status', 'accepted');
+
+      return response;
+    } catch (e) {
+      throw "Failed to get friends: $e";
+    }
+  }
 }

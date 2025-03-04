@@ -20,7 +20,7 @@ class DialogBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
-      content: Container(
+      content: SizedBox(
         width: 200,
         height: 300,
         child: Column(

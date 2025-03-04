@@ -41,45 +41,45 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: const Text("Sign Up"),
       ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 35, vertical: 70),
+        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 70),
         children: [
           //email
           TextField(
             controller: _emailController,
-            decoration: InputDecoration(labelText: "Email"),
+            decoration: const InputDecoration(labelText: "Email"),
           ),
           //password
           TextField(
             controller: _passwordController,
-            decoration: InputDecoration(labelText: "Password"),
+            decoration: const InputDecoration(labelText: "Password"),
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
           ),
           TextField(
             controller: _confirmPassword,
-            decoration: InputDecoration(labelText: "Confirm Password"),
+            decoration: const InputDecoration(labelText: "Confirm Password"),
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
           ),
           ElevatedButton(
             onPressed: SignUp,
-            child: Text("Log in"),
+            child: const Text("Log in"),
 
             ),
-          SizedBox(height: 12,),
+          const SizedBox(height: 12,),
 
           GestureDetector(
             onTap: () => Navigator.push(
               context, MaterialPageRoute(
                 builder: (context) => const LoginPage(),)
             ),
-            child: Center(
+            child: const Center(
               child: Text("allready have a account? Log in!"),
             ),
           ),
