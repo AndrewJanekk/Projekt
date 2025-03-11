@@ -7,14 +7,13 @@ class DialogBox extends StatelessWidget {
   final controller;
   final ammontController;
   VoidCallback onSave;
-  VoidCallback onCancel; 
-    DialogBox({
-      super.key, 
+  VoidCallback onCancel;
+  DialogBox(
+      {super.key,
       required this.ammontController,
       required this.controller,
       required this.onSave,
-      required this.onCancel
-    });
+      required this.onCancel});
 
   @override
   Widget build(BuildContext context) {
@@ -26,34 +25,34 @@ class DialogBox extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-          TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              fillColor: Theme.of(context).colorScheme.onSecondary,
-              hintText: 'Name new Group'
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  fillColor: Theme.of(context).colorScheme.onSecondary,
+                  hintText: 'Name new Group'),
+            ),
+            TextField(
+              controller: ammontController,
+              keyboardType: TextInputType.numberWithOptions(),
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  fillColor: Theme.of(context).colorScheme.onSecondary,
+                  hintText: 'ammount'),
+            ),
+            Center(
+              child: Row(
+                children: [
+                  Button(text: 'Save', onPressed: onSave),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Button(text: 'cancel', onPressed: onCancel)
+                ],
               ),
-             
-          ),
-          TextField(
-            controller: ammontController,
-            keyboardType: TextInputType.numberWithOptions(),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              fillColor: Theme.of(context).colorScheme.onSecondary,
-              hintText: 'ammount'
-              ),
-          ),
-          Center(
-            child: Row(
-              children:[
-              Button(text: 'Save', onPressed: onSave),
-              const SizedBox(width: 10,),
-              Button(text: 'cancel', onPressed: onCancel)
-            
-            ],),
-          )
-        ],),
+            )
+          ],
+        ),
       ),
     );
   }

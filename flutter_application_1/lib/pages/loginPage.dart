@@ -57,20 +57,21 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
             onPressed: login,
             child: Text("Log in"),
-
-            ),
-          SizedBox(height: 12,),
+          ),
+          SizedBox(
+            height: 12,
+          ),
 
           GestureDetector(
             onTap: () => Navigator.push(
-              context, MaterialPageRoute(
-                builder: (context) => const RegisterPage(),)
-            ),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterPage(),
+                )),
             child: Center(
               child: Text("don't have an acconut? Sign up!"),
             ),
           ),
-          
         ],
       ),
     );

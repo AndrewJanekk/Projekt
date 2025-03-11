@@ -29,42 +29,43 @@ class Tabbar extends StatelessWidget {
                 Center(
                   child: Title(
                     color: Theme.of(context).colorScheme.primary,
-                    child: Text("Fpay"),
+                    child: const Text("Fpay"),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 ListTile(
-                  title: Text("Search Friends"),
+                  title: const Text("Search Friends"),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SearchFriendsScreen(),
+                        builder: (context) => const SearchFriendsScreen(),
                       ),
                     );
                   },
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 ListTile(
-                  title: Text("Friends Requests"),
+                  title: const Text("Friends Requests"),
                   onTap: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FriendRequestsScreen(),
-                      )
-                    );
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FriendRequestsScreen(),
+                        ));
                   },
                 ),
-                Divider(),
+                const Divider(),
                 FutureBuilder(
-                  future: authService.getFriends(authService.getCurrentUserId()!),
+                  future:
+                      authService.getFriends(authService.getCurrentUserId()!),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text("Error: ${snapshot.error}");
                     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Text("No friends found");
+                      return const Text("No friends found");
                     } else {
                       final friends = snapshot.data!;
                       return Expanded(
@@ -89,13 +90,13 @@ class Tabbar extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: logout,
-              icon: Icon(Icons.logout),
+              icon: const Icon(Icons.logout),
             )
           ],
           backgroundColor: Theme.of(context).colorScheme.secondary,
-          title: Text('Fpay'),
+          title: const Text('Fpay'),
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50),
+            preferredSize: const Size.fromHeight(50),
             child: Column(
               children: [
                 Container(
@@ -127,10 +128,10 @@ class Tabbar extends StatelessWidget {
             ),
           ),
         ),
-        body: TabBarView(
-          children: const [
+        body: const TabBarView(
+          children: [
             HomePage(),
-            SecondPage(),
+            ObligationsPage(),
           ],
         ),
       ),

@@ -23,7 +23,8 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
     if (currentUserId == null) return;
 
     try {
-      final requests = await _authService.getPendingFriendRequests(currentUserId);
+      final requests =
+          await _authService.getPendingFriendRequests(currentUserId);
       setState(() {
         _pendingRequests = requests;
       });
@@ -34,15 +35,15 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
     }
   }
 
-  Future<void> _acceptRequest(String friendshipId) async {  // friendshipId jest String
+  Future<void> _acceptRequest(String friendshipId) async {
     print("Accepting friend request with ID: $friendshipId");
     try {
-      final friendshipIdInt = int.parse(friendshipId);  // Konwersja na int
-      await _authService.acceptFriendRequest(friendshipIdInt);  // Przekazanie int
+      final friendshipIdInt = int.parse(friendshipId);
+      await _authService.acceptFriendRequest(friendshipIdInt);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Friend request accepted!")),
+        const SnackBar(content: Text("Friend request accepted!")),
       );
-      _loadPendingRequests(); // Refresh the list
+      _loadPendingRequests();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to accept request: $e")),
@@ -54,10 +55,10 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Friend Requests'),
+        title: const Text('Friend Requests'),
       ),
       body: _pendingRequests.isEmpty
-          ? Center(child: Text("No pending friend requests"))
+          ? const Center(child: Text("No pending friend requests"))
           : ListView.builder(
               itemCount: _pendingRequests.length,
               itemBuilder: (context, index) {
@@ -66,8 +67,8 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
                 return ListTile(
                   title: Text(profile['username']),
                   trailing: IconButton(
-                    icon: Icon(Icons.check),
-                    onPressed: () => _acceptRequest(request['id'].toString()),  // Upewnij się, że friendshipId jest String
+                    icon: const Icon(Icons.check),
+                    onPressed: () => _acceptRequest(request['id'].toString()),
                   ),
                 );
               },

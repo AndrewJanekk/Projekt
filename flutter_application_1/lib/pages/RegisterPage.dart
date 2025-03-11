@@ -22,7 +22,8 @@ class _RegisterPageState extends State<RegisterPage> {
     final confirmedPassword = _confirmPassword.text;
 
     if (password != confirmedPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password dont match!")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Password dont match!")));
       return;
     }
 
@@ -30,13 +31,12 @@ class _RegisterPageState extends State<RegisterPage> {
       await authService.signUpWithEmailPassword(email, password);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     }
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,20 +70,21 @@ class _RegisterPageState extends State<RegisterPage> {
           ElevatedButton(
             onPressed: SignUp,
             child: const Text("Log in"),
-
-            ),
-          const SizedBox(height: 12,),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
 
           GestureDetector(
             onTap: () => Navigator.push(
-              context, MaterialPageRoute(
-                builder: (context) => const LoginPage(),)
-            ),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                )),
             child: const Center(
               child: Text("allready have a account? Log in!"),
             ),
           ),
-          
         ],
       ),
     );

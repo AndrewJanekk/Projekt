@@ -27,7 +27,7 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Friends'),
+        title: const Text('Search Friends'),
       ),
       body: Column(
         children: [
@@ -38,7 +38,7 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
               decoration: InputDecoration(
                 labelText: 'Search',
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: _searchUsers,
                 ),
               ),
@@ -52,10 +52,12 @@ class _SearchFriendsScreenState extends State<SearchFriendsScreen> {
                 return ListTile(
                   title: Text(user['username']),
                   trailing: IconButton(
-                    icon: Icon(Icons.person_add),
+                    icon: const Icon(Icons.person_add),
                     onPressed: () {
-                      final currentUserId = _authService.getCurrentUserId(); // Zastąp prawdziwym ID użytkownika
-                      _authService.sendFriendRequest(currentUserId!, user['id']);
+                      final currentUserId = _authService
+                          .getCurrentUserId(); // Zastąp prawdziwym ID użytkownika
+                      _authService.sendFriendRequest(
+                          currentUserId!, user['id']);
                     },
                   ),
                 );

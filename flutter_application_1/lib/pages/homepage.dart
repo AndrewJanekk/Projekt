@@ -1,78 +1,141 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/funcs/Grups.dart';
-import 'package:flutter_application_1/funcs/dialog_box.dart';
+import 'package:flutter_application_1/auth/auth_service.dart';
+import 'package:flutter_application_1/pages/Grups.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
-  List GroupList = [
-    ["nowa grupa", 25.50,]
-  ]; // 
-
-  final _nameController = TextEditingController();
-  final _amountController = TextEditingController();
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
+  final SupabaseClient _supabase = Supabase.instance.client;
+  final AuthService _authService = AuthService();
+  List<Map<String, dynamic>> _userGroups = [];
 
   @override
-  bool get wantKeepAlive => true; 
+  void initState() {
+    super.initState();
+    _fetchUserGroups();
+  }
 
-  void CreateNewGroup() {
-    showDialog(
+  Future<void> _fetchUserGroups() async {
+    try {
+      final userId = _authService.getCurrentUserId();
+      final response =
+          await _supabase.from('groups').select().eq('created_by', userId!);
+      setState(() {
+        _userGroups = response;
+      });
+    } catch (e) {
+      print("Błąd ładowania grup: $e");
+    }
+  }
+
+  Future<void> _deleteGroup(int groupId) async {
+    await _supabase.from('groups').delete().eq('id', groupId);
+    _fetchUserGroups();
+  }
+
+  Future<void> _addMemberToGroup(int groupId) async {
+    final friends =
+        await _authService.getFriends(_authService.getCurrentUserId()!);
+    final selectedFriend = await showDialog<Map<String, dynamic>>(
       context: context,
-      builder: (context) {
-        return DialogBox(
-          controller: _nameController,
-          ammontController: _amountController,
-          onSave: _SaveNewGroup,
-          onCancel: () => Navigator.of(context).pop(),
-        );
-      },
+      builder: (context) => AlertDialog(
+        title: const Text("Dodaj znajomego"),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            itemCount: friends.length,
+            itemBuilder: (context, index) {
+              final friend = friends[index]['profiles'];
+              return ListTile(
+                title: Text(friend['username']),
+                onTap: () => Navigator.pop(context, friend),
+              );
+            },
+          ),
+        ),
+      ),
     );
-  }
 
-  void _SaveNewGroup() {
-    setState(() {
-      final double money = double.tryParse(_amountController.text) ?? 0.0;
-      GroupList.add([_nameController.text, money]);
-      _nameController.clear();
-      _amountController.clear();
-    });
-    Navigator.of(context).pop();
-  }
-
-  void deleteGroup(int index) {
-    setState(() {
-      GroupList.removeAt(index);
-    });
+    if (selectedFriend != null) {
+      await _authService.addMemberToGroup(groupId, selectedFriend['id']);
+      _fetchUserGroups();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // Ważne! Trzeba to wywołać w build() z AutomaticKeepAliveClientMixin.
+    super.build(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       floatingActionButton: FloatingActionButton(
-        onPressed: CreateNewGroup,
-        backgroundColor: Theme.of(context).colorScheme.onSecondary,
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+        onPressed: () => _createNewGroup(context),
+        child: const Icon(Icons.add),
       ),
       body: ListView.builder(
-        itemCount: GroupList.length,
+        itemCount: _userGroups.length,
         itemBuilder: (context, index) {
-          return Grups(
-            GroupName: GroupList[index][0],
-            Money: GroupList[index][1],
-            delateFunction: (context) => deleteGroup(index),
+          final group = _userGroups[index];
+          return Groups(
+            groupName: group['name'],
+            groupId: group['id']
+                .toString(), // Upewnij się, że `groupId` jest typu `String`
+            totalAmount: group['total_amount'] ?? 0.0,
+            deleteFunction: (context) => _deleteGroup(group['id'] as int),
+            onAddMember: (String groupId) =>
+                _addMemberToGroup(int.parse(groupId)),
           );
         },
       ),
     );
   }
+
+  Future<void> _createNewGroup(BuildContext context) async {
+    final TextEditingController _nameController = TextEditingController();
+    final TextEditingController _amountController = TextEditingController();
+
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Nowa grupa"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(hintText: "Nazwa grupy"),
+            ),
+            TextField(
+              controller: _amountController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(hintText: "Kwota"),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              final amount = double.tryParse(_amountController.text) ?? 0.0;
+              await _authService.createGroup(
+                _nameController.text,
+                amount,
+              );
+              _fetchUserGroups();
+              Navigator.pop(context);
+            },
+            child: const Text("Zapisz"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
